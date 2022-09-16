@@ -1,0 +1,23 @@
+.navigation__list {
+    display: flex;
+    gap: 20px 50px;
+}
+
+.navigation__list_footer{
+    display: flex;
+    flex-direction: column;
+    /*justify-content: space-between;*/
+    /*gap: 20px;*/
+}
+
+@media (min-width: 560px) {
+    .navigation__list {
+        flex-direction: row;
+    }
+}
+
+@media (min-width: 1024px) {
+    .navigation__list {
+        gap: 84px;
+    }
+}
