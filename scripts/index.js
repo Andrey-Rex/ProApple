@@ -128,19 +128,23 @@ countryWrapper.addEventListener('click', ({target}) => {
 });
 
 //timer
-
+//склонение числительных
+const declOfNum = (n, titles) => titles[n % 10 === 1 && n % 100 !== 11 ?
+    0 : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? 1 : 2];
+//
 const timer = (deadline) => {
     const unitDay = document.querySelector('.timer__unit_day')
     const unitHour = document.querySelector('.timer__unit_hour')
     const unitMin = document.querySelector('.timer__unit_min')
+    const descriptionDay = document.querySelector('.timer__unit-description_day');
+    const descriptionHour = document.querySelector('.timer__unit-description_hour')
+    const descriptionMin = document.querySelector('.timer__unit-description_min');
 
     const getTimeRemaining = () => {
         const dateStop = new Date(deadline).getTime();
         const dateNow = Date.now();
         const timeRemaining = dateStop - dateNow;
 
-        // const ms = timeRemaining;
-        // const s = timeRemaining / 1000 %60;
         const min = Math.floor(timeRemaining / 1000 / 60 % 60);
         const hour = Math.floor(timeRemaining / 1000 / 60 / 60 % 24);
         const day = Math.floor(timeRemaining / 1000 / 60 / 60 / 24);
@@ -156,7 +160,19 @@ const timer = (deadline) => {
         unitHour.textContent = timer.hour;
         unitMin.textContent = timer.min;
 
+        descriptionDay.textContent = declOfNum(timer.day, ['день', 'дня', 'дней'] );
+        descriptionHour.textContent = declOfNum(timer.hour, ['час', 'часа', 'часов']);
+        descriptionMin.textContent = declOfNum(timer.min, ['минута', 'минуты', 'минут']);
+
         const timerID= setTimeout(start, 60000);
+
+        if (timer.timeRemaining < 0) {
+            clearTimeout(timerID);
+            unitDay.textContent = '0';
+            unitHour.textContent = '0';
+            unitMin.textContent = '0';
+
+        }
     }
 
     start();
