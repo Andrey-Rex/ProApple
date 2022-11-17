@@ -92,7 +92,7 @@ const showPrice = (currency = 'USD') => {
     })
 }
 
-showPrice()
+
 
 const myHeaders = new Headers();
 myHeaders.append("apikey", "EaLHv3yC7MKmfM98CcGKinFYDNHiNNbg");
@@ -103,7 +103,7 @@ const requestOptions = {
     headers: myHeaders
 };
 
-fetch("https://api.apilayer.com/fixer/latest?symbols=USD", requestOptions)
+fetch("https://api.apilayer.com/fixer/latest?base=USD", requestOptions)
     .then(response => response.json())
     .then(result => {
         Object.assign(dataCurrency, result.rates)
@@ -112,6 +112,7 @@ fetch("https://api.apilayer.com/fixer/latest?symbols=USD", requestOptions)
     .catch(error => console.log('error', error));
 
 //choices
+
 const countryBtn = document.querySelector('.country__btn');
 const countryWrapper = document.querySelector('.country__wrapper');
 
@@ -125,3 +126,40 @@ countryWrapper.addEventListener('click', ({target}) => {
         showPrice(target.dataset.currency);
     }
 });
+
+//timer
+
+const timer = (deadline) => {
+    const unitDay = document.querySelector('.timer__unit_day')
+    const unitHour = document.querySelector('.timer__unit_hour')
+    const unitMin = document.querySelector('.timer__unit_min')
+
+    const getTimeRemaining = () => {
+        const dateStop = new Date(deadline).getTime();
+        const dateNow = Date.now();
+        const timeRemaining = dateStop - dateNow;
+
+        // const ms = timeRemaining;
+        // const s = timeRemaining / 1000 %60;
+        const min = Math.floor(timeRemaining / 1000 / 60 % 60);
+        const hour = Math.floor(timeRemaining / 1000 / 60 / 60 % 24);
+        const day = Math.floor(timeRemaining / 1000 / 60 / 60 / 24);
+
+        return { timeRemaining, min, hour, day };
+    };
+    
+    const start = () => {
+        const timer = getTimeRemaining();
+        console.log('timer: ', timer)
+
+        unitDay.textContent = timer.day;
+        unitHour.textContent = timer.hour;
+        unitMin.textContent = timer.min;
+
+        const timerID= setTimeout(start, 60000);
+    }
+
+    start();
+};
+
+timer('2023/09/07 20:00');
